@@ -13,4 +13,20 @@ class Post < ApplicationRecord
     validates :title, exclusion: { in: ["True Facts"]}
 
 
+
+    #from solution branch using Regex - Look into for the future
+    validate :clickbait?
+
+    CLICKBAIT_PATTERNS = [
+      /Won't Believe/i,
+      /Secret/i,
+      /Top \d/i,
+      /Guess/i
+    ]
+  
+    def clickbait?
+      if CLICKBAIT_PATTERNS.none? { |pat| pat.match title }
+        errors.add(:title, "must be clickbait")
+      end
+
 end
